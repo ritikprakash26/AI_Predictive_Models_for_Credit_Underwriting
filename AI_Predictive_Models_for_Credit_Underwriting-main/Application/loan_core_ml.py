@@ -6,7 +6,6 @@ import sys
 # Force import of sklearn and dependencies before unpickling
 try:
     import numpy
-    import scipy
     import sklearn
     from sklearn.pipeline import Pipeline
     from sklearn.preprocessing import StandardScaler, OneHotEncoder
