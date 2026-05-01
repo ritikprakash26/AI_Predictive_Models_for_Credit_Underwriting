@@ -13,8 +13,19 @@ except ModuleNotFoundError:
     Groq = None
     GROQ_AVAILABLE = False
 
-# Load API key securely from Streamlit secrets
-api_key = st.secrets.get("GROQ_API_KEY")
+def _get_groq_api_key():
+    """Read GROQ_API_KEY from Streamlit secrets, then environment."""
+    try:
+        secret_val = st.secrets.get("GROQ_API_KEY")
+        if secret_val:
+            return secret_val
+    except Exception:
+        # st.secrets access can fail when no secrets are configured.
+        pass
+    return os.getenv("GROQ_API_KEY")
+
+# Load API key securely from Streamlit secrets/environment
+api_key = _get_groq_api_key()
 
 if GROQ_AVAILABLE and api_key:
     client = Groq(api_key=api_key)
