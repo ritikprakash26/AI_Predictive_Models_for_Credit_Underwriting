@@ -1,7 +1,10 @@
 import streamlit as st
 import pandas as pd
 import pickle
-import sklearn  # Import sklearn explicitly to avoid pickle errors
+try:
+    import sklearn
+except ImportError:
+    pass  # sklearn will be imported by pickle if needed
 from styles import core_ml_apply_styles
 import os
 
@@ -14,7 +17,7 @@ def load_model():
     except FileNotFoundError:
         st.error("❌ Model file not found. Please ensure 'Model_pipeline.pkl' is in the same folder as 'loan_core_ml.py'.")
         return None
-    except ImportError as e:
+    except (ImportError, ModuleNotFoundError) as e:
         st.error(f"❌ Import error loading model: {e}. Please ensure all dependencies are installed.")
         return None
     except Exception as e:
