@@ -8,6 +8,6 @@ flask
 streamlit
 ipykernel
 lightgbm==4.2.0
-groq
+groq==1.2.0
 python-dotenv
 google-generativeai

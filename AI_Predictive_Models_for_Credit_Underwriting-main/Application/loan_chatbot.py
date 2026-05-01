@@ -2,16 +2,24 @@ import streamlit as st
 import pickle
 import json
 import pandas as pd
-from groq import Groq
 import os 
 from styles import apply_styles
 from chatbot_prompt import get_initial_messages
 
-   
-# Load API key securely from Streamlit secrets
-api_key = st.secrets["GROQ_API_KEY"]
+try:
+    from groq import Groq
+    GROQ_AVAILABLE = True
+except ModuleNotFoundError:
+    Groq = None
+    GROQ_AVAILABLE = False
 
-client = Groq(api_key=api_key)
+# Load API key securely from Streamlit secrets
+api_key = st.secrets.get("GROQ_API_KEY")
+
+if GROQ_AVAILABLE and api_key:
+    client = Groq(api_key=api_key)
+else:
+    client = None
 MODEL = "llama3-70b-8192" 
 
 @st.cache_resource
@@ -93,6 +101,14 @@ def show():
     )
     st.markdown('</div>', unsafe_allow_html=True)
 
+    if client is None:
+        st.error(
+            "The chatbot backend is unavailable because the `groq` package is missing or the GROQ_API_KEY secret is not configured."
+        )
+        st.info(
+            "Install `groq` and add GROQ_API_KEY to Streamlit secrets before using the Chatbot page."
+        )
+        return
 
     # Initialize session state variables if they don't exist
     if "messages" not in st.session_state:
