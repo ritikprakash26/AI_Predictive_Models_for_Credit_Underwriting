@@ -1,15 +1,21 @@
 import streamlit as st
 import pandas as pd
 import pickle
+import sklearn  # Import sklearn explicitly to avoid pickle errors
 from styles import core_ml_apply_styles
 import os
+
 def load_model():
     try:
         current_dir = os.path.dirname(__file__)  # directory of loan_core_ml.py
         model_path = os.path.join(current_dir, "Model_pipeline.pkl")
-        return pickle.load(open(model_path, 'rb'))
+        with open(model_path, 'rb') as f:
+            return pickle.load(f)
     except FileNotFoundError:
         st.error("❌ Model file not found. Please ensure 'Model_pipeline.pkl' is in the same folder as 'loan_core_ml.py'.")
+        return None
+    except ImportError as e:
+        st.error(f"❌ Import error loading model: {e}. Please ensure all dependencies are installed.")
         return None
     except Exception as e:
         st.error(f"❌ Unexpected error loading model: {e}")
