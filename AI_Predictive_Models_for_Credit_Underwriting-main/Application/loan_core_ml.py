@@ -1,25 +1,30 @@
 import streamlit as st
 import pandas as pd
 import pickle
-import sys
+import warnings
+warnings.filterwarnings('ignore')
 
-# Force import of sklearn and dependencies before unpickling
+# Try to import sklearn components - if they fail, show a message
+sklearn_available = True
 try:
     import numpy
     import sklearn
     from sklearn.pipeline import Pipeline
     from sklearn.preprocessing import StandardScaler, OneHotEncoder
     from sklearn.compose import ColumnTransformer
-    import warnings
-    warnings.filterwarnings('ignore')
 except ImportError as e:
-    st.error(f"Missing critical dependency: {e}")
-    sys.exit(1)
+    sklearn_available = False
+    sklearn_error = str(e)
 
 from styles import core_ml_apply_styles
 import os
 
 def load_model():
+    if not sklearn_available:
+        st.error(f"❌ Missing critical dependency: {sklearn_error}")
+        st.info("This feature requires scikit-learn. Please ensure all dependencies are properly installed.")
+        return None
+    
     try:
         current_dir = os.path.dirname(__file__)
         model_path = os.path.join(current_dir, "Model_pipeline.pkl")

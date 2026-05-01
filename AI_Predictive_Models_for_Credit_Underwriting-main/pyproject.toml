@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "loan-default-prediction"
+version = "1.0.0"
+description = "AI Predictive Models for Credit Underwriting"
+requires-python = ">=3.11,<3.13"
+
+[tool.poetry]
+python = "^3.11"
