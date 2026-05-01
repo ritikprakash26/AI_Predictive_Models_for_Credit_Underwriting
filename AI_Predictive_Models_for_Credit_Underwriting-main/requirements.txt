@@ -1,0 +1,13 @@
+numpy
+pandas
+scikit-learn==1.5.1
+
+catboost
+seaborn
+flask
+streamlit
+ipykernel
+lightgbm==4.2.0
+groq
+python-dotenv
+google-generativeai
