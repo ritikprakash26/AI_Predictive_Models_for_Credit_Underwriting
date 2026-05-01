@@ -1,16 +1,28 @@
 import streamlit as st
 import pandas as pd
 import pickle
+import sys
+
+# Force import of sklearn and dependencies before unpickling
 try:
+    import numpy
+    import scipy
     import sklearn
-except ImportError:
-    pass  # sklearn will be imported by pickle if needed
+    from sklearn.pipeline import Pipeline
+    from sklearn.preprocessing import StandardScaler, OneHotEncoder
+    from sklearn.compose import ColumnTransformer
+    import warnings
+    warnings.filterwarnings('ignore')
+except ImportError as e:
+    st.error(f"Missing critical dependency: {e}")
+    sys.exit(1)
+
 from styles import core_ml_apply_styles
 import os
 
 def load_model():
     try:
-        current_dir = os.path.dirname(__file__)  # directory of loan_core_ml.py
+        current_dir = os.path.dirname(__file__)
         model_path = os.path.join(current_dir, "Model_pipeline.pkl")
         with open(model_path, 'rb') as f:
             return pickle.load(f)
