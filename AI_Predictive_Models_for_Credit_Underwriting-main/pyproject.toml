@@ -6,7 +6,17 @@ build-backend = "setuptools.build_meta"
 name = "loan-default-prediction"
 version = "1.0.0"
 description = "AI Predictive Models for Credit Underwriting"
-requires-python = ">=3.11,<3.13"
-
-[tool.poetry]
-python = "^3.11"
+requires-python = ">=3.9"
+dependencies = [
+    "streamlit>=1.28.0",
+    "numpy>=1.26.0",
+    "pandas>=2.1.0",
+    "scikit-learn>=1.4.0",
+    "matplotlib>=3.8.0",
+    "seaborn>=0.13.0",
+    "lightgbm>=4.3.0",
+    "flask>=3.0.0",
+    "groq>=1.4.0",
+    "python-dotenv>=1.0.0",
+    "google-generativeai>=0.4.0",
+]
